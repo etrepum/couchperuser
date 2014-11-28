@@ -46,6 +46,6 @@ Build the plugin files:
 
 Restart couchdb
 
-Bluehost Installation
+Digital Ocean Installation
 ----
 

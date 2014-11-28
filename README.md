@@ -46,6 +46,30 @@ Build the plugin files:
 
 Restart couchdb
 
-Digital Ocean Installation
+Modified Digital Ocean "Ubuntu 14.04" Installation
 ----
 
+Install any dependencies. `couchperuser` requires `rebar`, e.g.
+
+    $ apt-get install rebar
+
+Ensure the `plugins` directory exists, e.g.
+
+    $ mkdir /usr/local/lib/couchdb/plugins
+
+Clone (download) the repo:
+
+    $ git clone https://github.com/etrepum/couchperuser.git
+
+Move the plugin files:
+
+    $ mv couchperuser /usr/local/lib/couchdb/plugins
+
+Build the plugin files:
+
+    $ cd /usr/local/lib/couchdb/plugins/couchperuser
+    $ make
+
+Restart couchdb
+
+    $ service couchdb restart

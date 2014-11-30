@@ -111,7 +111,13 @@ update_security(Db, SecProps, Admins, Names) ->
          <<"admins">>, 1, SecProps,
          {<<"admins">>,
           {lists:keystore(
-             <<"names">>, 1, Admins, {<<"names">>, Names})}})}).
+             <<"names">>, 1, Admins, {<<"names">>, Names})}},
+         <<"members">>, 1, SecProps,
+         {<<"members">>,
+          {lists:keystore(
+             <<"names">>, 1, Admins, {<<"names">>, Names})}}
+          )
+      }).
 
 update_security_members(Db, SecProps, Members, MNames) ->
     couch_db:set_security(

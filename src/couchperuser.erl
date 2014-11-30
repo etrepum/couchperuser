@@ -99,15 +99,15 @@ update_security(Db, SecProps, Admins, Names) ->
     couch_db:set_security(
       Db,
       {lists:keystore(
-         <<"members">>, 1, SecProps,
-         {<<"members">>,
-          {lists:keystore(
-             <<"names">>, 1, Admins, {<<"names">>, Names})}}),
-      lists:keystore(
          <<"admins">>, 1, SecProps,
          {<<"admins">>,
           {lists:keystore(
-             <<"names">>, 1, Admins, {<<"names">>, Names})}})}).
+             <<"names">>, 1, Admins, {<<"names">>, Names})},
+          <<"members">>,
+          {lists:keystore(
+             <<"names">>, 1, Admins, {<<"names">>, Names})}
+          }
+          )}).
 user_db_name(User) ->
     <<"userdb-", (iolist_to_binary(mochihex:to_hex(User)))/binary>>.
 

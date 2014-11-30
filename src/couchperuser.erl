@@ -92,16 +92,17 @@ ensure_security(User, {ok, Db}, Acc) ->
         false ->
             update_security(Db, SecProps, Admins, [User | Names])
     end,
+
     case lists:member(User, MNames) of
         true ->
             ok;
         false ->
-            update_security_members(Db, SecProps, Members, [User | MNames])
+            update_security_members(Db, SecProps, Admins, Members, [User | Names], [User | MNames])
     end,
     couch_db:close(Db),
     Acc.
 
-update_security(Db, SecProps, Admins, Names) ->
+update_security(Db, SecProps, Admins, Names, MNames) ->
     couch_db:set_security(
       Db,
       {lists:keystore(
@@ -110,14 +111,19 @@ update_security(Db, SecProps, Admins, Names) ->
           {lists:keystore(
              <<"names">>, 1, Admins, {<<"names">>, Names})}})}).
 
-update_security_members(Db, SecProps, Members, MNames) ->
+update_security_members(Db, SecProps, Admins, Members, Names, MNames) ->
     couch_db:set_security(
       Db,
       {lists:keystore(
          <<"members">>, 1, SecProps,
          {<<"members">>,
           {lists:keystore(
-             <<"names">>, 1, Members, {<<"names">>, MNames})}})}).
+             <<"names">>, 1, Members, {<<"names">>, MNames})}}
+         <<"admins">>, 1, SecProps,
+         {<<"admins">>,
+          {lists:keystore(
+             <<"names">>, 1, Admins, {<<"names">>, Names})}}
+          )}).
 
 
 user_db_name(User) ->

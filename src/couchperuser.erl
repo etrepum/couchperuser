@@ -97,14 +97,13 @@ ensure_security(User, {ok, Db}, Acc) ->
     Acc.
 
 update_security(Db, SecProps, Admins, Names) ->
+    {NewAdmins} = lists:keystore(<<"admins">>, 1, SecProps, {<<"admins">>, {lists:keystore( <<"names">>, 1, Admins, {<<"names">>, Names})}}),
     couch_db:set_security(
       Db,
-      {lists:keystore(
-         <<"admins">>, 1, SecProps, {<<"admins">>, {lists:keystore( <<"names">>, 1, Admins, {<<"names">>, Names})}}
-          ),
-        lists:keystore(
-                 <<"members">>, 1, SecProps, {<<"members">>, {lists:keystore( <<"names">>, 1, Admins, {<<"names">>, Names})}}
-                  ),      
+      {
+
+      lists:keystore(<<"admins">>, 1, SecProps, {<<"admins">>, {lists:keystore( <<"names">>, 1, Admins, {<<"names">>, Names})}})
+
       }
     ).    
 

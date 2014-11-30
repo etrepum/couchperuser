@@ -100,7 +100,10 @@ update_security(Db, SecProps, Admins, Names) ->
       Db,
       {lists:keystore(
          <<"members">>, 1, SecProps,
-         {<<"members">>,
+         {<<"admins">>,
+          {lists:keystore(
+             <<"names">>, 1, Admins, {<<"names">>, Names})},
+         <<"members">>,
           {lists:keystore(
              <<"names">>, 1, Admins, {<<"names">>, Names})}})}).
 

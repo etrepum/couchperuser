@@ -59,7 +59,7 @@ Ensure the `plugins` directory exists, e.g.
 
 Clone (download) the repo:
 
-    $ git clone https://github.com/etrepum/couchperuser.git
+    $ git clone https://github.com/jspenc72/couchperuser.git
 
 Move the plugin files:
 

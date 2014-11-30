@@ -83,12 +83,20 @@ ensure_user_db(User) ->
 ensure_security(User, {ok, Db}, Acc) ->
     {SecProps} = couch_db:get_security(Db),
     {Admins} = couch_util:get_value(<<"admins">>, SecProps, {[]}),
+    {Members} = couch_util:get_value(<<"members">>, SecProps, {[]}),
+    MNames = couch_util:get_value(<<"names">>, Members, []),
     Names = couch_util:get_value(<<"names">>, Admins, []),
     case lists:member(User, Names) of
         true ->
             ok;
         false ->
             update_security(Db, SecProps, Admins, [User | Names])
+    end,
+    case lists:member(User, MNames) of
+        true ->
+            ok;
+        false ->
+            update_security_members(Db, SecProps, Members, [User | MNames])
     end,
     couch_db:close(Db),
     Acc.
@@ -101,6 +109,16 @@ update_security(Db, SecProps, Admins, Names) ->
          {<<"admins">>,
           {lists:keystore(
              <<"names">>, 1, Admins, {<<"names">>, Names})}})}).
+
+update_security_members(Db, SecProps, Members, MNames) ->
+    couch_db:set_security(
+      Db,
+      {lists:keystore(
+         <<"members">>, 1, SecProps,
+         {<<"members">>,
+          {lists:keystore(
+             <<"names">>, 1, Members, {<<"names">>, MNames})}})}).
+
 
 user_db_name(User) ->
     <<"userdb-", (iolist_to_binary(mochihex:to_hex(User)))/binary>>.

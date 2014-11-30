@@ -83,10 +83,7 @@ ensure_user_db(User) ->
 ensure_security(User, {ok, Db}, Acc) ->
     {SecProps} = couch_db:get_security(Db),
     {Admins} = couch_util:get_value(<<"admins">>, SecProps, {[]}),
-    {Members} = couch_util:get_value(<<"members">>, SecProps, {[]}),
-    MNames = couch_util:get_value(<<"names">>, Members, []),
     Names = couch_util:get_value(<<"names">>, Admins, []),
-
     case lists:member(User, Names) of
         true ->
             ok;

@@ -47,7 +47,12 @@ Build the plugin files:
 Restart couchdb
 
 Digital Ocean "Ubuntu 14.04" Installation Instructions
+
+
 ----
+Install couchdb.
+
+https://www.digitalocean.com/community/tutorials/how-to-install-couchdb-from-source-on-an-ubuntu-13-04-x64-vps
 
 Install any dependencies. `couchperuser` requires `rebar`, e.g.
 

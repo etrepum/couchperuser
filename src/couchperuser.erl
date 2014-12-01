@@ -84,23 +84,28 @@ ensure_security(User, {ok, Db}, Acc) ->
     {SecProps} = couch_db:get_security(Db),
     {Admins} = couch_util:get_value(<<"admins">>, SecProps, {[]}),
     Names = couch_util:get_value(<<"names">>, Admins, []),
+
     case lists:member(User, Names) of
         true ->
             ok;
         false ->
             update_security(Db, SecProps, Admins, [User | Names])
     end,
+
+
     couch_db:close(Db),
     Acc.
 
 update_security(Db, SecProps, Admins, Names) ->
+    NewAdmins = lists:keystore(<<"admins">>, 1, SecProps, {<<"admins">>, {lists:keystore( <<"names">>, 1, Admins, {<<"names">>, Names})}}),
+    NewMembers = lists:keystore(<<"members">>, 1, SecProps, {<<"members">>, {lists:keystore( <<"names">>, 1, NewAdmins, {<<"names">>, Names})}}),
+    NewCombined = lists:append(NewAdmins,NewMembers),
     couch_db:set_security(
       Db,
-      {lists:keystore(
-         <<"admins">>, 1, SecProps,
-         {<<"admins">>,
-          {lists:keystore(
-             <<"names">>, 1, Admins, {<<"names">>, Names})}})}).
+      {
+        NewCombined
+      }
+    ).    
 
 user_db_name(User) ->
     <<"userdb-", (iolist_to_binary(mochihex:to_hex(User)))/binary>>.

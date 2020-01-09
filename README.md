@@ -1,3 +1,7 @@
+# Note : Obsolete as of CouchDB 2.1.1
+
+You can now enable this in CouchDB using the built-in [couch_peruser](https://docs.couchdb.org/en/latest/config/couch-peruser.html) option.
+
 couchperuser
 ============
 
